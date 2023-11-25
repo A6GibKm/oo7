@@ -25,6 +25,11 @@ jobs:
         with:
           working-directory: ./keyring-util
           command: check
+      - name: Check (oo7-portal-impl)
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+          working-directory: ./oo7-portal-impl
 
   test:
     name: Test Suite
@@ -48,8 +53,10 @@ jobs:
           dbus-run-session -- cargo test --no-default-features --features async-std --features openssl_crypto
       - name: Build (keyring-util)
         working-directory: ./keyring-util
-        run: |
-          cargo build
+        run: cargo build
+      - name: Build and test (oo7-portal-impl)
+        working-directory: ./oo7-portal-impl
+        run: cargo build
 
   fmt:
     name: Rustfmt
@@ -73,6 +80,12 @@ jobs:
           command: fmt
           working-directory: ./keyring-util
           args: --all -- --check
+      - name: Rust Format (oo7-portal-impl)
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          working-directory: ./oo7-portal-impl
+          args: --all -- --check
 
   clippy:
     name: Clippy
@@ -95,4 +108,10 @@ jobs:
         with:
           command: clippy
           working-directory: ./keyring-util
+          args: -- -D warnings
+      - name: Clippy (oo7-portal-impl)
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          working-directory: ./oo7-portal-impl
           args: -- -D warnings
